@@ -1,3 +1,8 @@
 site_index:
     path:     /site
     defaults: { _controller: SiteBundle:Default:index }
+
+site_salam:
+    path:  /index
+    defaults: { _controller: SiteBundle:Public:index }    
+
