@@ -1,0 +1,12 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}BlogBundle:Post:index{% endblock %}
+
+{% block body %}
+<h1>{{ titre }}</h1>
+<p>
+    {{ post }}
+</p>
+<hr>
+<small>{{datepublication}}</small>
+{% endblock %}
