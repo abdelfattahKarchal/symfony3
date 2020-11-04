@@ -1,0 +1,12 @@
+stock_homepage:
+    path:     /stock
+    defaults: { _controller: StockBundle:Default:index }
+
+stock_show:
+    path:     /stock/{id}/{annee}/{titre}.{ext}
+    defaults: { _controller: StockBundle:Default:show, ext: html}
+    requirements:
+        id: \d+
+        annee: \d{4}
+        titre: "[a-zA-Z]+"
+        ext: php|html|jsp
