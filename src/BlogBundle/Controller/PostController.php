@@ -13,15 +13,36 @@ class PostController extends Controller
      */
     public function indexAction()
     {
-        $data =[
-            "titre" => "Titre de post",
-            "post" => "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant
-                impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500,
-                quand un imprimeur anonyme assembla ensemble des morceaux de texte pour réaliser
-                un livre spécimen de polices de texte.",
-               "datepublication" => date('Y-m-d')
+        $data = [
+            [
+                "id" => 1,
+                "titre" => "Titre de post",
+                "post" => "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant
+                    impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500,
+                    quand un imprimeur anonyme assembla ensemble des morceaux de texte pour réaliser
+                    un livre spécimen de polices de texte.",
+                "datepublication" => date('Y-m-d')
+            ],
+            [
+                "id" => 2,
+                "titre" => "Titre de post",
+                "post" => "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant
+                    impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500,
+                    quand un imprimeur anonyme assembla ensemble des morceaux de texte pour réaliser
+                    un livre spécimen de polices de texte.",
+                "datepublication" => date('Y-m-d')
+            ],
+            [
+                "id" => 3,
+                "titre" => "Titre de post",
+                "post" => "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant
+                    impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500,
+                    quand un imprimeur anonyme assembla ensemble des morceaux de texte pour réaliser
+                    un livre spécimen de polices de texte.",
+                "datepublication" => date('Y-m-d')
+            ]
         ];
-        return $this->render('BlogBundle:Post:index.html.twig', $data);
+        return $this->render('BlogBundle:Post:index.html.twig', ['articles' => $data]);
         return $this->appel();
     }
 

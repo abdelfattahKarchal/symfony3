@@ -1,12 +1,36 @@
-{% extends "::base.html.twig" %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Document</title>
+	</head>
+	<body>
+		{# {% if id == 1 %}
+		    <h1>{{ titre }}
+				Nº :
+				{{id}}</h1>
+			<p>
+				{{ post }}
+			</p>
+			<hr>
+		    {% elseif id == 2 %}
+		        <h1> le id est 2</h1>
+		        {% else %}
+		            <h1>le id est different de 1</h1>
+		{% endif %}
+			
+			<small>{{datepublication}}</small> #}
 
-{% block title %}BlogBundle:Post:index{% endblock %}
-
-{% block body %}
-<h1>{{ titre }}</h1>
-<p>
-    {{ post }}
-</p>
-<hr>
-<small>{{datepublication}}</small>
-{% endblock %}
+		{% for article in articles %}
+			<h1>{{ article.titre }}
+				Nº :
+				{{article.id}}</h1>
+			<p>
+				{{ article.post }}
+			</p>
+            <small>{{article.datepublication}}</small> 
+			<hr>
+		{% endfor %}
+	</body>
+</html>
