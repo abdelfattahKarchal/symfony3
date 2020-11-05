@@ -50,4 +50,12 @@ class PostController extends Controller
     {
         return new Response('je suis dans la fonction appel');
     }
+
+    /**
+     * @Route("post/show")
+     */
+    public function showAction()
+    {
+        return $this->render('BlogBundle:Post:show.html.twig');
+    }
 }
