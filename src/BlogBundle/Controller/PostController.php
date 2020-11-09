@@ -6,6 +6,7 @@ use BlogBundle\Entity\Post;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
+use tidy;
 
 class PostController extends Controller
 {
@@ -57,13 +58,26 @@ class PostController extends Controller
      */
     public function showAction()
     {
-        $repositoryPost = $this->getDoctrine()->getRepository("BlogBundle:Post");
-        //$posts = $repositoryPost->findAll();
-        //$posts = $repositoryPost->findOneByTitle("2eme titre");
-        //$posts = $repositoryPost->findByActive(1);
-        $posts = $repositoryPost->findBy(['active'=>1],['title'=> 'DESC'],1);
+        /* // la 1er methode en utilisant createQuery de Manager service
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery("SELECT p FROM BlogBundle:Post p WHERE p.active = :active AND p.title LIKE :titre ORDER BY p.title DESC");
+        $query->setParameter("active",1);
+        $query->setParameter("titre","1%");
+        $posts =$query->getResult(); */
 
-         echo "<pre>", print_r($posts ),"</pre>";
+        // 2eme methode en utilisant createQueryBuilder de Repository service
+
+        $repository = $this->getDoctrine()->getRepository("BlogBundle:Post");
+        // le parametre p c est l alias de modele Post 
+        $query = $repository->createQueryBuilder("p")
+            ->where('p.active = :etat')
+            ->andWhere("p.title like :titre")
+            ->orderBy('p.title', "DESC")
+            ->setParameters(["etat"=>1, "titre"=> '1%'])
+            ->getQuery();
+        $posts = $query->getResult();
+
+        echo "<pre>", print_r($posts), "</pre>";
 
         return new Response('show post');
         //return $this->render('BlogBundle:Post:show.html.twig');
