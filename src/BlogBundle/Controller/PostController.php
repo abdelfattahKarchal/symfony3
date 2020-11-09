@@ -2,6 +2,7 @@
 
 namespace BlogBundle\Controller;
 
+use BlogBundle\Entity\Post;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -57,5 +58,30 @@ class PostController extends Controller
     public function showAction()
     {
         return $this->render('BlogBundle:Post:show.html.twig');
+    }
+
+    /**
+     * @Route("post/create")
+     */
+    public function createAction()
+    {
+        $post = new Post();
+
+        $post->setTitle('2eme titre');
+        $post->setDescription('2eme description');
+        $post->setActive(1);
+
+        /* $doctrine = $this->getDoctrine();
+        $manager = $doctrine->getManager();
+
+        $manager->persist($post);
+        // confirmation de persistance (commit)
+        $manager->flush(); */
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($post);
+        $em->flush();
+
+        return new Response('created post');
     }
 }
