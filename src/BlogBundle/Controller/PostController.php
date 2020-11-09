@@ -57,7 +57,16 @@ class PostController extends Controller
      */
     public function showAction()
     {
-        return $this->render('BlogBundle:Post:show.html.twig');
+        $repositoryPost = $this->getDoctrine()->getRepository("BlogBundle:Post");
+        //$posts = $repositoryPost->findAll();
+        //$posts = $repositoryPost->findOneByTitle("2eme titre");
+        //$posts = $repositoryPost->findByActive(1);
+        $posts = $repositoryPost->findBy(['active'=>1],['title'=> 'DESC'],1);
+
+         echo "<pre>", print_r($posts ),"</pre>";
+
+        return new Response('show post');
+        //return $this->render('BlogBundle:Post:show.html.twig');
     }
 
     /**
