@@ -60,9 +60,9 @@ class PostController extends Controller
         $em = $this->getDoctrine()->getManager();
         //objet post
         $post = new Post();
-        $post->setTitle('3eme titre');
-        $post->setSlug('3eme-titre');
-        $post->setDescription('3eme description');
+        $post->setTitle('1er titre avec categies');
+        $post->setSlug('1er-titre avec categies');
+        $post->setDescription('1er description avec categies');
         $post->setActive(1);
         //objet Image
         $image = new Image();
@@ -79,6 +79,13 @@ class PostController extends Controller
 
         //associaton one to one
         $post->setImage($image);
+
+        //association ManyToMany
+        $repositoryCategory = $em->getRepository('BlogBundle:Category');
+        $categories = $repositoryCategory->findAll();
+        foreach ($categories as  $category) {
+            $post->addCategory($category);
+        }
 
         $em->persist($post);
         $em->flush();
