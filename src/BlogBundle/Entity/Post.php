@@ -42,6 +42,11 @@ class Post
      * @ORM\ManyToOne(targetEntity="BlogBundle\Entity\Author", cascade={"persist"})
      */
     private $author;
+    // post c est la table proprietaire (posts le champ aui est dans l entite Category)
+    /**
+     * @ORM\ManyToMany(targetEntity="BlogBundle\Entity\Category", cascade={"persist"}, inversedBy="posts")
+     */
+    private $categories;
 
     /**
      * @var string
@@ -209,5 +214,46 @@ class Post
     public function getAuthor()
     {
         return $this->author;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add category
+     *
+     * @param \BlogBundle\Entity\Category $category
+     *
+     * @return Post
+     */
+    public function addCategory(\BlogBundle\Entity\Category $category)
+    {
+        $this->categories[] = $category;
+
+        return $this;
+    }
+
+    /**
+     * Remove category
+     *
+     * @param \BlogBundle\Entity\Category $category
+     */
+    public function removeCategory(\BlogBundle\Entity\Category $category)
+    {
+        $this->categories->removeElement($category);
+    }
+
+    /**
+     * Get categories
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCategories()
+    {
+        return $this->categories;
     }
 }
