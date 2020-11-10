@@ -34,7 +34,10 @@ class Post
      * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
-
+    /**
+     * @ORM\OneToOne(targetEntity="BlogBundle\Entity\Image", cascade={"persist"})
+     */
+    private $image;
     /**
      * @var string
      * @ORM\Column(name="slug", type="string", length=200)
@@ -153,5 +156,29 @@ class Post
     public function getSlug()
     {
         return $this->slug;
+    }
+
+    /**
+     * Set image
+     *
+     * @param \BlogBundle\Entity\Image $image
+     *
+     * @return Post
+     */
+    public function setImage(\BlogBundle\Entity\Image $image = null)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return \BlogBundle\Entity\Image
+     */
+    public function getImage()
+    {
+        return $this->image;
     }
 }
