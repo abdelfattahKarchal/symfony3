@@ -2,6 +2,7 @@
 
 namespace BlogBundle\Controller;
 
+use BlogBundle\Entity\Image;
 use BlogBundle\Entity\Post;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -88,20 +89,23 @@ class PostController extends Controller
      */
     public function createAction()
     {
+        $em = $this->getDoctrine()->getManager();
+        //objet post
         $post = new Post();
-
         $post->setTitle('2eme titre');
+        $post->setSlug('2eme-titre');
         $post->setDescription('2eme description');
         $post->setActive(1);
+        //objet Image
+        $image = new Image();
+        $image->setUrl('https://i0.wp.com/wp.laravel-news.com/wp-content/uploads/2020/03/laravel7.jpg?fit=2200%2C1125&ssl=1?resize=2200%2C1125');
+        $image->setAlt('framwork symfony');
+       /*  $em->persist($image);
+        $em->flush(); */
 
-        /* $doctrine = $this->getDoctrine();
-        $manager = $doctrine->getManager();
+        //associaton one to one
+        $post->setImage($image);
 
-        $manager->persist($post);
-        // confirmation de persistance (commit)
-        $manager->flush(); */
-
-        $em = $this->getDoctrine()->getManager();
         $em->persist($post);
         $em->flush();
 
