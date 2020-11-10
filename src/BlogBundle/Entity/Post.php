@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="post")
  * @ORM\Entity(repositoryClass="BlogBundle\Repository\PostRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Post
 {
@@ -51,7 +52,7 @@ class Post
     /**
      * @var string
      * @ORM\Column(name="slug", type="string", length=200)
-    */
+     */
     private $slug;
 
     /**
@@ -60,7 +61,14 @@ class Post
      * @ORM\Column(name="active", type="boolean")
      */
     private $active;
-
+    /**
+     * @ORM\Column(name="created_at", nullable=true, type="datetime")
+     */
+    private $createdAt;
+    /**
+     * @ORM\Column(name="updated_at", nullable=true, type="datetime")
+     */
+    private $updatedAt;
 
     /**
      * Get id
@@ -255,5 +263,62 @@ class Post
     public function getCategories()
     {
         return $this->categories;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param string $createdAt
+     *
+     * @return Post
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return string
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param string $updatedAt
+     *
+     * @return Post
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return string
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    //events d affectation de date avant la creation d un post
+    /**
+     * @ORM\PrePersist
+     */
+    public function createDate()
+    {
+        $this->setCreatedAt( new \DateTime());
     }
 }

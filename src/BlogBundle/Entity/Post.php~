@@ -42,15 +42,16 @@ class Post
      * @ORM\ManyToOne(targetEntity="BlogBundle\Entity\Author", cascade={"persist"})
      */
     private $author;
+    // post c est la table proprietaire (posts le champ aui est dans l entite Category)
     /**
-     * @ORM\ManyToMany(targetEntity="BlogBundle\Entity\Category", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="BlogBundle\Entity\Category", cascade={"persist"}, inversedBy="posts")
      */
     private $categories;
 
     /**
      * @var string
      * @ORM\Column(name="slug", type="string", length=200)
-    */
+     */
     private $slug;
 
     /**
@@ -59,7 +60,14 @@ class Post
      * @ORM\Column(name="active", type="boolean")
      */
     private $active;
-
+    /**
+     * @ORM\Column(name="created_at", nullable=true, type="datetime")
+     */
+    private $createdAt;
+    /**
+     * @ORM\Column(name="updated_at", nullable=true, type="datetime")
+     */
+    private $updatedAt;
 
     /**
      * Get id
@@ -213,5 +221,94 @@ class Post
     public function getAuthor()
     {
         return $this->author;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add category
+     *
+     * @param \BlogBundle\Entity\Category $category
+     *
+     * @return Post
+     */
+    public function addCategory(\BlogBundle\Entity\Category $category)
+    {
+        $this->categories[] = $category;
+
+        return $this;
+    }
+
+    /**
+     * Remove category
+     *
+     * @param \BlogBundle\Entity\Category $category
+     */
+    public function removeCategory(\BlogBundle\Entity\Category $category)
+    {
+        $this->categories->removeElement($category);
+    }
+
+    /**
+     * Get categories
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param string $createdAt
+     *
+     * @return Post
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return string
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param string $updatedAt
+     *
+     * @return Post
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return string
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
     }
 }
