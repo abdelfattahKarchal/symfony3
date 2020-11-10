@@ -39,6 +39,11 @@ class Post
      */
     private $image;
     /**
+     * @ORM\ManyToOne(targetEntity="BlogBundle\Entity\Author", cascade={"persist"})
+     */
+    private $author;
+
+    /**
      * @var string
      * @ORM\Column(name="slug", type="string", length=200)
     */
@@ -180,5 +185,29 @@ class Post
     public function getImage()
     {
         return $this->image;
+    }
+
+    /**
+     * Set author
+     *
+     * @param \BlogBundle\Entity\Author $author
+     *
+     * @return Post
+     */
+    public function setAuthor(\BlogBundle\Entity\Author $author = null)
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * Get author
+     *
+     * @return \BlogBundle\Entity\Author
+     */
+    public function getAuthor()
+    {
+        return $this->author;
     }
 }

@@ -16,43 +16,11 @@ class PostController extends Controller
      */
     public function indexAction()
     {
-        $data = [
-            [
-                "id" => 1,
-                "titre" => "Titre de post",
-                "post" => "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant
-                    impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500,
-                    quand un imprimeur anonyme assembla ensemble des morceaux de texte pour réaliser
-                    un livre spécimen de polices de texte.",
-                "datepublication" => date('Y-m-d')
-            ],
-            [
-                "id" => 2,
-                "titre" => "Titre de post",
-                "post" => "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant
-                    impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500,
-                    quand un imprimeur anonyme assembla ensemble des morceaux de texte pour réaliser
-                    un livre spécimen de polices de texte.",
-                "datepublication" => date('Y-m-d')
-            ],
-            [
-                "id" => 3,
-                "titre" => "Titre de post",
-                "post" => "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant
-                    impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500,
-                    quand un imprimeur anonyme assembla ensemble des morceaux de texte pour réaliser
-                    un livre spécimen de polices de texte.",
-                "datepublication" => date('Y-m-d')
-            ]
-        ];
-        return $this->render('BlogBundle:Post:index.html.twig', ['articles' => $data]);
-        return $this->appel();
+        $em = $this->getDoctrine()->getManager()->getRepository('BlogBundle:Post');
+        $posts = $em->findAll();
+        return $this->render('BlogBundle:Post:index.html.twig', ['posts' => $posts]);
     }
 
-    public function appel()
-    {
-        return new Response('je suis dans la fonction appel');
-    }
 
     /**
      * @Route("post/show")
@@ -92,9 +60,9 @@ class PostController extends Controller
         $em = $this->getDoctrine()->getManager();
         //objet post
         $post = new Post();
-        $post->setTitle('2eme titre');
-        $post->setSlug('2eme-titre');
-        $post->setDescription('2eme description');
+        $post->setTitle('3eme titre');
+        $post->setSlug('3eme-titre');
+        $post->setDescription('3eme description');
         $post->setActive(1);
         //objet Image
         $image = new Image();
@@ -102,6 +70,12 @@ class PostController extends Controller
         $image->setAlt('framwork symfony');
        /*  $em->persist($image);
         $em->flush(); */
+
+        // association Many To One with author
+        $repositoryAuthor = $em->getRepository('BlogBundle:Author');
+        $author = $repositoryAuthor->find(2);
+
+        $post->setAuthor($author);
 
         //associaton one to one
         $post->setImage($image);

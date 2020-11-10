@@ -7,18 +7,18 @@
 		<div class="row">
 			<div class="col-12">
 				<ul class="list-group">
-					{% for article in articles %}
+					{% for post in posts %}
 						<li class="list-group-item {% if loop.first %} active {% endif %}">
-							<h1>{{ article.titre | title }}
+							<h1>{{ post.title | title }}
 								Nº :
 								{{loop.index0}}</h1>
+								<img width="100px" src="{{ post.image.url }}" alt="{{ post.image.alt }}">
 							<p>
-								{{ article.post }}
+								{{ post.description }}
 							</p>
 
-							<small>{{ article.datepublication | date("d/m/Y")}}</small>
 							<span class="badge badge-secondary">
-								{{ article.post | length}}</span>
+								{{ post.author.lastname }} {{ post.author.firstname }}</span>
 							<hr>
 						</li>
 					{% endfor %}
