@@ -60,9 +60,9 @@ class PostController extends Controller
         $em = $this->getDoctrine()->getManager();
         //objet post
         $post = new Post();
-        $post->setTitle('1er titre avec categies');
-        $post->setSlug('1er-titre avec categies');
-        $post->setDescription('1er description avec categies');
+        $post->setTitle('1er titre avec categies et event created at');
+        $post->setSlug('1er-titre avec categies et event created at');
+        $post->setDescription('1er description avec categies et event created at');
         $post->setActive(1);
         //objet Image
         $image = new Image();
