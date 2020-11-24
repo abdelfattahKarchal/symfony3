@@ -23,6 +23,14 @@
                  <div class="form-group">
                     {{ form_row(formulaire.description, {'attr': {'class': 'form-control'}}) }}
                 </div>
+                <hr>
+                <div class="form-group">
+                    {{ form_row(formulaire.image.url, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="form-group">
+                    {{ form_row(formulaire.image.alt, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <hr>
                  <div class="checkbox">
                     <label>
                         {{ form_widget(formulaire.active) }}
