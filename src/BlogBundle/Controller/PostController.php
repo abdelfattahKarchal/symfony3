@@ -6,6 +6,11 @@ use BlogBundle\Entity\Image;
 use BlogBundle\Entity\Post;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType as TypeTextType;
 use Symfony\Component\HttpFoundation\Response;
 use tidy;
 
@@ -60,7 +65,19 @@ class PostController extends Controller
         $em = $this->getDoctrine()->getManager();
         //objet post
         $post = new Post();
-        $post->setTitle('1er titre avec categies et event created at');
+        // creation de formulaire a l aide du service form.factory
+        $formPost = $this->get('form.factory')->createBuilder(FormType::class,$post)
+                            ->add('title',TypeTextType::class, ['attr'=> ['placeholder'=>'title of post', 'class'=>'textClass']])
+                            ->add('description', TextareaType::class)
+                            ->add('slug',TypeTextType::class)
+                            ->add('active',CheckboxType::class)
+                            ->add('Enregistrer', SubmitType::class);
+          
+         $form = $formPost->getForm();
+         
+         return $this->render('BlogBundle:Post:create.html.twig',['formulaire'=> $form->createView()]);
+
+       /*  $post->setTitle('1er titre avec categies et event created at');
         $post->setSlug('1er-titre avec categies et event created at');
         $post->setDescription('1er description avec categies et event created at');
         $post->setActive(1);
@@ -68,8 +85,8 @@ class PostController extends Controller
         $image = new Image();
         $image->setUrl('https://i0.wp.com/wp.laravel-news.com/wp-content/uploads/2020/03/laravel7.jpg?fit=2200%2C1125&ssl=1?resize=2200%2C1125');
         $image->setAlt('framwork symfony');
-       /*  $em->persist($image);
-        $em->flush(); */
+       // $em->persist($image);
+        //$em->flush(); 
 
         // association Many To One with author
         $repositoryAuthor = $em->getRepository('BlogBundle:Author');
@@ -88,7 +105,7 @@ class PostController extends Controller
         }
 
         $em->persist($post);
-        $em->flush();
+        $em->flush(); */
 
         return new Response('created post');
     }
