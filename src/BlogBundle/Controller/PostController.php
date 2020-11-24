@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType as TypeTextType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use tidy;
 
@@ -60,7 +61,7 @@ class PostController extends Controller
     /**
      * @Route("post/create")
      */
-    public function createAction()
+    public function createAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         //objet post
@@ -74,39 +75,42 @@ class PostController extends Controller
                             ->add('enregistrer', SubmitType::class);
           
          $form = $formPost->getForm();
+
+         if ($request->isMethod('POST')) {
+             // association des elements de request a l objet form
+             $form->handleRequest($request);
+
+             //objet Image
+             $image = new Image();
+             $image->setUrl('https://i0.wp.com/wp.laravel-news.com/wp-content/uploads/2020/03/laravel7.jpg?fit=2200%2C1125&ssl=1?resize=2200%2C1125');
+             $image->setAlt('framwork symfony');
+            // $em->persist($image);
+             //$em->flush(); 
+     
+             // association Many To One with author
+             $repositoryAuthor = $em->getRepository('BlogBundle:Author');
+             $author = $repositoryAuthor->find(2);
+     
+             $post->setAuthor($author);
+     
+             //associaton one to one
+             $post->setImage($image);
+     
+             //association ManyToMany
+             $repositoryCategory = $em->getRepository('BlogBundle:Category');
+             $categories = $repositoryCategory->findAll();
+             foreach ($categories as  $category) {
+                 $post->addCategory($category);
+             }
+     
+             $em->persist($post);
+             $em->flush();
+         }
          
          return $this->render('BlogBundle:Post:create.html.twig',['formulaire'=> $form->createView()]);
 
-       /*  $post->setTitle('1er titre avec categies et event created at');
-        $post->setSlug('1er-titre avec categies et event created at');
-        $post->setDescription('1er description avec categies et event created at');
-        $post->setActive(1);
-        //objet Image
-        $image = new Image();
-        $image->setUrl('https://i0.wp.com/wp.laravel-news.com/wp-content/uploads/2020/03/laravel7.jpg?fit=2200%2C1125&ssl=1?resize=2200%2C1125');
-        $image->setAlt('framwork symfony');
-       // $em->persist($image);
-        //$em->flush(); 
+       /*  */
 
-        // association Many To One with author
-        $repositoryAuthor = $em->getRepository('BlogBundle:Author');
-        $author = $repositoryAuthor->find(2);
-
-        $post->setAuthor($author);
-
-        //associaton one to one
-        $post->setImage($image);
-
-        //association ManyToMany
-        $repositoryCategory = $em->getRepository('BlogBundle:Category');
-        $categories = $repositoryCategory->findAll();
-        foreach ($categories as  $category) {
-            $post->addCategory($category);
-        }
-
-        $em->persist($post);
-        $em->flush(); */
-
-        return new Response('created post');
+        //return new Response('created post');
     }
 }
