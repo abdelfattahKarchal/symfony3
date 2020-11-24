@@ -21,6 +21,7 @@ class PostType extends AbstractType
         ->add('description', TextareaType::class)
         ->add('slug',TextType::class)
         ->add('active',CheckboxType::class)
+        ->add('image',ImageType::class)
         ->add('enregistrer',SubmitType::class);
     }
     
