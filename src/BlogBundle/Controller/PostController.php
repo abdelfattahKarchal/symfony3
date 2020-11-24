@@ -71,7 +71,7 @@ class PostController extends Controller
                             ->add('description', TextareaType::class)
                             ->add('slug',TypeTextType::class)
                             ->add('active',CheckboxType::class)
-                            ->add('Enregistrer', SubmitType::class);
+                            ->add('enregistrer', SubmitType::class);
           
          $form = $formPost->getForm();
          
