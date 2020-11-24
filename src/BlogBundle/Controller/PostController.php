@@ -4,6 +4,7 @@ namespace BlogBundle\Controller;
 
 use BlogBundle\Entity\Image;
 use BlogBundle\Entity\Post;
+use BlogBundle\Form\PostType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -67,12 +68,15 @@ class PostController extends Controller
         //objet post
         $post = new Post();
         // creation de formulaire a l aide du service form.factory
-        $formPost = $this->get('form.factory')->createBuilder(FormType::class,$post)
+        /* $formPost = $this->get('form.factory')->createBuilder(FormType::class,$post)
                             ->add('title',TypeTextType::class, ['attr'=> ['placeholder'=>'title of post', 'class'=>'textClass']])
                             ->add('description', TextareaType::class)
                             ->add('slug',TypeTextType::class)
                             ->add('active',CheckboxType::class)
-                            ->add('enregistrer', SubmitType::class);
+                            ->add('enregistrer', SubmitType::class); */
+         
+        // externalisation de formulaire PostType via la commande bin/console doctrine:generate:form BlogBundle:Post 
+        $formPost = $this->get('form.factory')->createBuilder(PostType::class,$post);                 
           
          $form = $formPost->getForm();
 
