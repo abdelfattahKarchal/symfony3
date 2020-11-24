@@ -1,5 +1,39 @@
-{% extends "::base.html.twig" %}
+{% extends "BlogBundle::layout.html.twig" %}
 
 {% block content %}
-    {{ form(formulaire) }}
+	{# {{ form(formulaire) }} #}
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				<h1 class="page-header">
+					Nouveau post
+				</h1>
+                {{ form_start(formulaire) }}
+                <div class="form-group">
+                {# form_row permet d acceder a trois composant d une ligne (label, widget(input) et erreurs) #}
+                {# Form_widget permet d acceder directement a  l input #}
+                    {{ form_label(formulaire.title) }}
+                    {{ form_widget(formulaire.title, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(formulaire.title) }}
+                    {# ou on peut ecrire =>{{ form_row(formulaire.title, {'attr': {'class': 'form-control'}}) }}  #}
+                </div>
+                 <div class="form-group">
+                    {{ form_row(formulaire.slug, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                 <div class="form-group">
+                    {{ form_row(formulaire.description, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                 <div class="checkbox">
+                    <label>
+                        {{ form_widget(formulaire.active) }}
+                        active
+                    </label>
+                </div>
+
+                {{ form_widget(formulaire.enregistrer, {'attr': {'class': 'btn btn-block btn-primary'}}) }}
+
+                {{ form_end(formulaire) }}
+			</div>
+		</div>
+	</div>
 {% endblock %}
