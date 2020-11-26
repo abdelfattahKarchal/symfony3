@@ -19,7 +19,7 @@ use tidy;
 class PostController extends Controller
 {
     /**
-     * @Route("post")
+     * @Route("post", name="index_post")
      */
     public function indexAction()
     {
@@ -30,9 +30,9 @@ class PostController extends Controller
 
 
     /**
-     * @Route("post/show")
+     * @Route("post/show/{id}", name="show_post")
      */
-    public function showAction()
+    public function showAction($id)
     {
         /* // la 1er methode en utilisant createQuery de Manager service
         $em = $this->getDoctrine()->getManager();
@@ -45,18 +45,20 @@ class PostController extends Controller
 
         $repository = $this->getDoctrine()->getRepository("BlogBundle:Post");
         // le parametre p c est l alias de modele Post 
-        $query = $repository->createQueryBuilder("p")
+       /*  $query = $repository->createQueryBuilder("p")
             ->where('p.active = :etat')
             ->andWhere("p.title like :titre")
             ->orderBy('p.title', "DESC")
             ->setParameters(["etat"=>1, "titre"=> '1%'])
             ->getQuery();
-        $posts = $query->getResult();
+        $posts = $query->getResult(); */
 
-        echo "<pre>", print_r($posts), "</pre>";
+        $post = $repository->find($id);
 
-        return new Response('show post');
-        //return $this->render('BlogBundle:Post:show.html.twig');
+       /*  echo "<pre>", print_r($posts), "</pre>"; */
+
+        //return new Response('show post');
+        return $this->render('BlogBundle:Post:show.html.twig',['post' => $post]);
     }
 
     /**
@@ -109,6 +111,8 @@ class PostController extends Controller
      
              $em->persist($post);
              $em->flush();
+
+             return $this->redirectToRoute('show_post',['id'=> $post->getId()]);
          }
          
          return $this->render('BlogBundle:Post:create.html.twig',['formulaire'=> $form->createView()]);
