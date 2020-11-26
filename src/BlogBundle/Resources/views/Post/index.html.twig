@@ -3,12 +3,19 @@
 
 {% block content %}
 {{ parent() }}
+
+{# difference entre path et url (path = chemin relatif (/post/create), url = chemin absolu (http://127.0.0.1:8000/post/show/1)) #}
 	<div class="container">
 	<div class="row">
 		<div class="col-8 col-offset-2">
 			{% for message in app.session.flashbag.get('success') %}
 				{{ message }}
 			{% endfor %} 
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-2">
+			<a href="{{ path('create_post') }}" class="btn btn-primary"> nouveau post</a>
 		</div>
 	</div>
 		<div class="row">
@@ -27,6 +34,7 @@
 							<span class="badge badge-secondary">
 								{{ post.author.lastname }} {{ post.author.firstname }}</span>
 							<hr>
+							<a href="{{ url('show_post',{'id': post.id}) }}" class="btn btn-success"> show details</a>
 						</li>
 					{% endfor %}
 				</ul>
