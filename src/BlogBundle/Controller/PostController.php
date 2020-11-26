@@ -87,9 +87,9 @@ class PostController extends Controller
              $form->handleRequest($request);
 
              //objet Image
-             $image = new Image();
+             /* $image = new Image();
              $image->setUrl('https://i0.wp.com/wp.laravel-news.com/wp-content/uploads/2020/03/laravel7.jpg?fit=2200%2C1125&ssl=1?resize=2200%2C1125');
-             $image->setAlt('framwork symfony');
+             $image->setAlt('framwork symfony'); */
             // $em->persist($image);
              //$em->flush(); 
      
@@ -100,7 +100,7 @@ class PostController extends Controller
              $post->setAuthor($author);
      
              //associaton one to one
-             $post->setImage($image);
+             //$post->setImage($image);
      
              //association ManyToMany
              $repositoryCategory = $em->getRepository('BlogBundle:Category');
@@ -112,7 +112,9 @@ class PostController extends Controller
              $em->persist($post);
              $em->flush();
 
-             return $this->redirectToRoute('show_post',['id'=> $post->getId()]);
+             //return $this->redirectToRoute('show_post',['id'=> $post->getId()]);
+             $request->getSession()->getFlashBag()->add('success','Post a ete bien enregistre');
+             return $this->redirectToRoute('index_post');
          }
          
          return $this->render('BlogBundle:Post:create.html.twig',['formulaire'=> $form->createView()]);
