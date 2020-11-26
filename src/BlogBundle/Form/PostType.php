@@ -17,10 +17,10 @@ class PostType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('title',TextType::class)
-        ->add('description', TextareaType::class)
-        ->add('slug',TextType::class)
-        ->add('active',CheckboxType::class)
+        $builder->add('title',TextType::class,['required'=>false])
+        ->add('description', TextareaType::class,['required'=>false])
+        ->add('slug',TextType::class,['required'=>false])
+        ->add('active',CheckboxType::class,['required'=>false])
         ->add('image',ImageType::class)
         ->add('enregistrer',SubmitType::class);
     }

@@ -85,8 +85,8 @@ class PostController extends Controller
          if ($request->isMethod('POST')) {
              // association des elements de request a l objet form
              $form->handleRequest($request);
-
-             //objet Image
+             if ($form->isValid()) {
+                //objet Image
              /* $image = new Image();
              $image->setUrl('https://i0.wp.com/wp.laravel-news.com/wp-content/uploads/2020/03/laravel7.jpg?fit=2200%2C1125&ssl=1?resize=2200%2C1125');
              $image->setAlt('framwork symfony'); */
@@ -115,6 +115,9 @@ class PostController extends Controller
              //return $this->redirectToRoute('show_post',['id'=> $post->getId()]);
              $request->getSession()->getFlashBag()->add('success','Post a ete bien enregistre');
              return $this->redirectToRoute('index_post');
+            }
+
+             
          }
          
          return $this->render('BlogBundle:Post:create.html.twig',['formulaire'=> $form->createView()]);
