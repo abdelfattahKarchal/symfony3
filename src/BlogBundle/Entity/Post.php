@@ -3,6 +3,7 @@
 namespace BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Post
@@ -24,7 +25,8 @@ class Post
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank(message="merci de mettre un titre !!")
+     * @Assert\Length(min=5,max=50,minMessage="le titre doit contenir au moin {{ limit }} caractere", maxMessage="le titre ne doit pas depasser {{ limit }} caractere")
      * @ORM\Column(name="title", type="string", length=167, nullable=true)
      */
     private $title;
