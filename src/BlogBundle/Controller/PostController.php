@@ -45,7 +45,7 @@ class PostController extends Controller
 
         $repository = $this->getDoctrine()->getRepository("BlogBundle:Post");
         // le parametre p c est l alias de modele Post 
-       /*  $query = $repository->createQueryBuilder("p")
+        /*  $query = $repository->createQueryBuilder("p")
             ->where('p.active = :etat')
             ->andWhere("p.title like :titre")
             ->orderBy('p.title', "DESC")
@@ -55,10 +55,10 @@ class PostController extends Controller
 
         $post = $repository->find($id);
 
-       /*  echo "<pre>", print_r($posts), "</pre>"; */
+        /*  echo "<pre>", print_r($posts), "</pre>"; */
 
         //return new Response('show post');
-        return $this->render('BlogBundle:Post:show.html.twig',['post' => $post]);
+        return $this->render('BlogBundle:Post:show.html.twig', ['post' => $post]);
     }
 
     /**
@@ -76,53 +76,63 @@ class PostController extends Controller
                             ->add('slug',TypeTextType::class)
                             ->add('active',CheckboxType::class)
                             ->add('enregistrer', SubmitType::class); */
-         
-        // externalisation de formulaire PostType via la commande bin/console doctrine:generate:form BlogBundle:Post 
-        $formPost = $this->get('form.factory')->createBuilder(PostType::class,$post);                 
-          
-         $form = $formPost->getForm();
 
-         if ($request->isMethod('POST')) {
-             // association des elements de request a l objet form
-             $form->handleRequest($request);
-             if ($form->isValid()) {
+        // externalisation de formulaire PostType via la commande bin/console doctrine:generate:form BlogBundle:Post 
+        $formPost = $this->get('form.factory')->createBuilder(PostType::class, $post);
+
+        $form = $formPost->getForm();
+
+        if ($request->isMethod('POST')) {
+            // association des elements de request a l objet form
+            $form->handleRequest($request);
+            if ($form->isValid()) {
                 //objet Image
-             /* $image = new Image();
+                /* $image = new Image();
              $image->setUrl('https://i0.wp.com/wp.laravel-news.com/wp-content/uploads/2020/03/laravel7.jpg?fit=2200%2C1125&ssl=1?resize=2200%2C1125');
              $image->setAlt('framwork symfony'); */
-            // $em->persist($image);
-             //$em->flush(); 
-     
-             // association Many To One with author
-             $repositoryAuthor = $em->getRepository('BlogBundle:Author');
-             $author = $repositoryAuthor->find(2);
-     
-             $post->setAuthor($author);
-     
-             //associaton one to one
-             //$post->setImage($image);
-     
-             //association ManyToMany
-             $repositoryCategory = $em->getRepository('BlogBundle:Category');
-             $categories = $repositoryCategory->findAll();
-             foreach ($categories as  $category) {
-                 $post->addCategory($category);
-             }
-     
-             $em->persist($post);
-             $em->flush();
+                // $em->persist($image);
+                //$em->flush(); 
 
-             //return $this->redirectToRoute('show_post',['id'=> $post->getId()]);
-             $request->getSession()->getFlashBag()->add('success','Post a ete bien enregistre');
-             return $this->redirectToRoute('index_post');
+                /* -------------- upload Image ------------
+                pour faire un upload il faut mentioner le fichier d upload dans le fichier de configuration 
+                sur le champs parameters (app/config/config.yml)
+             */
+                $file = $post->getImage()->getUrl();
+                $fileName = $file->getClientOriginalName() . '.' . $file->guessExtension();
+                $file->move($this->getParameter('uploads_directory') . '/posts', $fileName);
+
+                //mise ajour la table
+                $post->getImage()->setUrl($fileName);
+                /*------------------Fin upload image-------------------------------- */
+
+                // association Many To One with author
+                $repositoryAuthor = $em->getRepository('BlogBundle:Author');
+                $author = $repositoryAuthor->find(2);
+
+                $post->setAuthor($author);
+
+                //associaton one to one
+                //$post->setImage($image);
+
+                //association ManyToMany
+                $repositoryCategory = $em->getRepository('BlogBundle:Category');
+                $categories = $repositoryCategory->findAll();
+                foreach ($categories as  $category) {
+                    $post->addCategory($category);
+                }
+
+                $em->persist($post);
+                $em->flush();
+
+                //return $this->redirectToRoute('show_post',['id'=> $post->getId()]);
+                $request->getSession()->getFlashBag()->add('success', 'Post a ete bien enregistre');
+                return $this->redirectToRoute('index_post');
             }
+        }
 
-             
-         }
-         
-         return $this->render('BlogBundle:Post:create.html.twig',['formulaire'=> $form->createView()]);
+        return $this->render('BlogBundle:Post:create.html.twig', ['formulaire' => $form->createView()]);
 
-       /*  */
+        /*  */
 
         //return new Response('created post');
     }
