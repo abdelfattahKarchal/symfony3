@@ -39,6 +39,7 @@ class Post
     private $description;
     /**
      * @ORM\OneToOne(targetEntity="BlogBundle\Entity\Image", cascade={"persist"})
+     * @Assert\Valid()
      */
     private $image;
     /**

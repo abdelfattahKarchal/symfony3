@@ -4,6 +4,8 @@ namespace BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * Image
  *
@@ -23,7 +25,8 @@ class Image
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank()
+     * @Assert\File(mimeTypes= {"image/png", "image/jpeg"}, mimeTypesMessage="{{ type }} non autoriser le fichier doit respecter {{ types }} ")
      * @ORM\Column(name="url", type="string", length=255, nullable=true)
      */
     private $url;
